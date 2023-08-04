@@ -155,3 +155,11 @@ body {
 .illegal {
     background-color: var(--illegal-colour);
 }
+
+#license {
+    font-size: 0.8vw;
+    position: absolute;
+    bottom: 0.4vw;
+    align-self: end;
+    margin-right: 1vw;
+}
