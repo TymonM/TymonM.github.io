@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+ 
+<head>
+    <style>
+        #board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 10px;
+            width: 300px;
+            height: 300px;
+            margin: auto;
+        }
+ 
+        .cell {
+            width: 100%;
+            height: 100%;
+            border: 1px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            cursor: pointer;
+        }
+ 
+        .highlight {
+            background-color: yellow;
+        }
+    </style>
+</head>
+ 
+<body>
+    <div id="board">
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+    </div>
+ 
+    <div id="currentTurn"></div>
+    <div id="currentPhase"></div>
+ 
+    <h1>Rulez</h1>
+    <p>First player to get three in a row wins. You can play only adj moving or flying.</p>
+ 
+    <button onclick="resetMoveFrom()">Reset moveFrom</button>
+ 
+    <script>
+        let board = Array(9).fill(null);
+        let currentPlayer = 'X';
+        let moveFrom = null;
+        let phase = 1; // 1: placing, 0: moving
+ 
+        const cells = Array.from(document.querySelectorAll('.cell'));
+ 
+        function updateUI() {
+            document.getElementById('currentTurn').innerText = `Current player: ${currentPlayer}`;
+            document.getElementById('currentPhase').innerText = `Current phase: ${phase}`;
+        }
+ 
+        cells.forEach((cell, i) => {
+            cell.addEventListener('click', () => {
+                if (board[i] === null && moveFrom !== null) {
+                    // If the cell clicked has no content and they are moving a piece
+                    // Reset moveFrom cell
+                    cells[moveFrom].classList.remove('highlight');
+                    board[moveFrom] = null;
+                    cells[moveFrom].textContent = '';
+ 
+                    // Set new cell
+                    board[i] = currentPlayer;
+                    cell.textContent = currentPlayer;
+ 
+                    // Toggle player
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+ 
+                    // Reste moveFrom
+                    moveFrom = null;
+                } else if (board[i] === null && phase === 1) {
+                    // If they are placing a piece and the cell clicked has no content
+                    // set the new piece
+                    board[i] = currentPlayer;
+                    cell.textContent = currentPlayer;
+ 
+                    // Toggle player
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+ 
+                    // Check if the placing phase is over or not, if it is, modify 
+                    if (board.filter(x => x !== null).length >= 6) {
+                        phase = 0;
+                        alert("Placing phase over, take turns moving pieces");
+                    }
+                } else if (board[i] === currentPlayer && phase === 0) {
+                    // If they are selecting which piece to move
+                    if (moveFrom !== null) {
+                        cells[moveFrom].classList.remove('highlight');
+                    }
+                    moveFrom = i;
+                    cell.classList.add('highlight');
+                }
+                updateUI();
+                if (checkWin()) {
+                    alert(`${(currentPlayer === 'X' ? 'O' : 'X')} won!`);
+                    location.reload();
+                }
+            });
+        });
+ 
+        function resetMoveFrom() {
+            if (moveFrom !== null) {
+                cells[moveFrom].classList.remove('highlight');
+            }
+            moveFrom = null;
+        }
+ 
+        // Chat GPT made this, got no clue how it works, might try to figure it out later
+        function checkWin() {
+            const winConditions = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6]
+            ];
+ 
+            for (let condition of winConditions) {
+                if (board[condition[0]] !== null &&
+                    board[condition[0]] === board[condition[1]] &&
+                    board[condition[0]] === board[condition[2]]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+ 
+        updateUI();
+    </script>
+ 
+</body>
+ 
+</html>
