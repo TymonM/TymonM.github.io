@@ -5,6 +5,9 @@
     /* --Dark-color: #DDA0DD; */
     --highlight-colour: orange;
     --illegal-colour: #444444;
+
+    --phaseColourA: #888888;
+    --phaseColourB: #E8E8E8;
 }
 
 @keyframes spiralIn {
@@ -73,9 +76,9 @@ body {
     flex: 1;
 
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: end;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
 }
 
 #right {
@@ -83,6 +86,118 @@ body {
 
     display: flex;
     flex-direction: column;
+}
+
+#currentPhase {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding-left: 4vw;
+
+    scale: 80%;
+}
+
+.phase {
+    transition: scale 0.3s ease, opacity 0.3s ease, z-index 0.3s ease;
+}
+
+.inactivePhase {
+    scale: 0.8;
+    opacity: 20%;
+    z-index: -1;
+}
+
+#placingPhase {
+    margin-top: 8vw;
+    margin-bottom: -6vw;
+    padding-left: 1vw;
+}
+
+#placingPhase>:first-child {
+    width: 8vw;
+    height: 8vw;
+    border: 0.13vw solid black;
+    border-radius: 1vw;
+    background-color: var(--phaseColourA);
+}
+
+#placingPhase>:nth-child(2) {
+    position: relative;
+    right: 4vw;
+    bottom: 10vw;
+    width: 8vw;
+    height: 8vw;
+    border: 0.13vw solid black;
+    border-radius: 1vw;
+    background-color: var(--phaseColourB);
+}
+
+#movingPhase {
+    margin-bottom: 10vw;
+    margin-right: 2vw;
+}
+
+#movingPhase>:first-child {
+    width: 8vw;
+    height: 8vw;
+    border: 0.13vw solid black;
+    border-radius: 1vw;
+    background-color: var(--phaseColourB);
+}
+
+#movingPhase>:nth-child(2) {
+    position: relative;
+    top: -9.5vw;
+    left: 3.2vw;
+
+    width: 0; 
+    height: 0; 
+    border-left: 1vw solid transparent;
+    border-right: 1vw solid transparent;
+    
+    border-bottom: 1vw solid var(--phaseColourA);
+}
+
+#movingPhase>:nth-child(3) {
+    position: relative;
+    top: -0.5vw;
+    left: 3.1vw;
+
+    width: 0; 
+    height: 0; 
+    border-left: 1vw solid transparent;
+    border-right: 1vw solid transparent;
+    
+    border-top: 1vw solid var(--phaseColourA);
+}
+
+#movingPhase>:nth-child(4) {
+    position: relative;
+    top: -7.2vw;
+    left: -1.5vw;
+
+    width: 0; 
+    height: 0; 
+    border-top: 1vw solid transparent;
+    border-bottom: 1vw solid transparent;
+    
+    border-right: 1vw solid var(--phaseColourA);
+}
+
+#movingPhase>:nth-child(5) {
+    position: relative;
+    top: -9.1vw;
+    left: 8.6vw;
+
+    width: 0; 
+    height: 0; 
+    border-top: 1vw solid transparent;
+    border-bottom: 1vw solid transparent;
+    
+    border-left: 1vw solid var(--phaseColourA);
 }
 
 #turnColour {

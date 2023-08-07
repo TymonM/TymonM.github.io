@@ -7,6 +7,7 @@ const cells = Array.from(document.querySelectorAll('.cell'));
 
 function updateUI() {
     document.getElementById('turnColour').className = currentPlayer;
+    updatePhase();
 }
 
 cells.forEach((cell, i) => {
@@ -44,7 +45,6 @@ cells.forEach((cell, i) => {
             // Check if the placing phase is over or not, if it is, modify 
             if (board.filter(x => x !== null).length >= 6) {
                 phase = 0;
-                alert("Placing phase over, take turns moving pieces");
             }
         } else if (board[i] === currentPlayer && phase === 0) {
             // If they are selecting which piece to move
@@ -179,6 +179,16 @@ function animateClear() {
     cells.forEach((cell) => {
         cell.className = "shake cell";
     });
+}
+
+function updatePhase() {
+    if (phase === 1) {
+        document.getElementById("placingPhase").classList.remove("inactivePhase");
+        document.getElementById("movingPhase").classList.add("inactivePhase");
+    } else {
+        document.getElementById("movingPhase").classList.remove("inactivePhase");
+        document.getElementById("placingPhase").classList.add("inactivePhase");
+    }
 }
 
 function colourMenu() {
