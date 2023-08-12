@@ -1,5 +1,12 @@
 let board = Array(9).fill(null);
-let currentPlayer = 'Light';
+
+let currentPlayer
+
+let score = {
+    Light: 0,
+    Dark: 0
+}
+
 let moveFrom = null;
 let phase = 1; // 1: placing, 0: moving
 
@@ -7,6 +14,9 @@ const cells = Array.from(document.querySelectorAll('.cell'));
 
 function updateUI() {
     document.getElementById('turnColour').className = currentPlayer;
+    document.getElementById("scoreLight").innerText = score.Light;
+    document.getElementById("scoreDark").innerText = score.Dark;
+
     updatePhase();
 }
 
@@ -56,6 +66,7 @@ cells.forEach((cell, i) => {
         }
         updateUI();
         if (checkWin()) {
+            score[currentPlayer == 'Light' ? 'Dark' : 'Light']++;
             showWin();
             // location.reload();
         }
@@ -107,7 +118,10 @@ function spiral(index) {
 function initialise() {
     board = Array(9).fill(null);
 
-    currentPlayer = 'Light';
+    // Randomize starting player
+    let options = ['Light', 'Dark'];
+    currentPlayer = options[Math.floor(Math.random() * options.length)];
+
     moveFrom = null;
     phase = 1; // 1: placing, 0: moving
 }
